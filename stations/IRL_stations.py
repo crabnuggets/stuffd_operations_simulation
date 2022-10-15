@@ -8,6 +8,7 @@ class IRLWrapToastingStation(Station):
         self.processing_time_max = 12
         self.processing_time_mean = 10
         self.processing_time_sd = 2
+        self.capacity = 1
 
 
 class IRLSaladBaseStation(Station):
@@ -17,6 +18,7 @@ class IRLSaladBaseStation(Station):
         self.processing_time_max = 18
         self.processing_time_mean = 12
         self.processing_time_sd = 5
+        self.capacity = 1
 
 
 class IRLSauceStation(Station):
@@ -26,6 +28,7 @@ class IRLSauceStation(Station):
         self.processing_time_max = 7
         self.processing_time_mean = 5
         self.processing_time_sd = 2
+        self.capacity = 1
 
 
 class IRLDailyBowlToppingsStation(Station):
@@ -35,6 +38,7 @@ class IRLDailyBowlToppingsStation(Station):
         self.processing_time_max = 20
         self.processing_time_mean = 13
         self.processing_time_sd = 5
+        self.capacity = 1
 
 
 class IRLMeatStation(Station):
@@ -44,6 +48,7 @@ class IRLMeatStation(Station):
         self.processing_time_max = 5
         self.processing_time_mean = 3
         self.processing_time_sd = 1
+        self.capacity = 1
 
 
 class IRLAdditionalToppingsStation(Station):
@@ -53,6 +58,7 @@ class IRLAdditionalToppingsStation(Station):
         self.processing_time_max = 18
         self.processing_time_mean = 13
         self.processing_time_sd = 3
+        self.capacity = 1
 
 
 class IRLWrappingStation(Station):
@@ -71,6 +77,7 @@ class IRLProductToastingStation(Station):
         self.processing_time_max = 15
         self.processing_time_mean = 12
         self.processing_time_sd = 3
+        self.capacity = 3
 
 
 class IRLPaymentStation(Station):
@@ -80,3 +87,4 @@ class IRLPaymentStation(Station):
         self.processing_time_max = 35
         self.processing_time_mean = 18
         self.processing_time_sd = 6
+        self.capacity = 1

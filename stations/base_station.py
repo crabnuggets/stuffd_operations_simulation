@@ -7,6 +7,7 @@ class Station:
         self.processing_time_max = None
         self.processing_time_mean = None
         self.processing_time_sd = None
+        self.capacity = None
         self.queue = []
 
     def get_processing_time(self):
