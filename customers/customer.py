@@ -1,7 +1,5 @@
 import random
 
-from scipy.stats import norm
-
 from flow_units.flow_units import *
 from orders.order import *
 
