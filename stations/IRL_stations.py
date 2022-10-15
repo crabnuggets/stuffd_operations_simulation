@@ -55,6 +55,24 @@ class IRLAdditionalToppingsStation(Station):
         self.processing_time_sd = 3
 
 
+class IRLWrappingStation(Station):
+    def __init__(self) -> None:
+        super().__init__()
+        self.processing_time_min = 3.5
+        self.processing_time_max = 5
+        self.processing_time_mean = 4
+        self.processing_time_sd = 1.5
+
+
+class IRLProductToastingStation(Station):
+    def __init__(self) -> None:
+        super().__init__()
+        self.processing_time_min = 8
+        self.processing_time_max = 15
+        self.processing_time_mean = 12
+        self.processing_time_sd = 3
+
+
 class IRLPaymentStation(Station):
     def __init__(self) -> None:
         super().__init__()
