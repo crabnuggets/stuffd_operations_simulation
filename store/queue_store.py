@@ -22,6 +22,7 @@ class QueueStore(Store):
                              self.product_toasting_station,
                              self.cashier]
 
+    # TODO: Remove this function if it is not used
     def process_customer(self):
         """
         Add the orders from the customer at the head of the queue (if one exists) to the list of orders to process.
@@ -37,3 +38,9 @@ class QueueStore(Store):
         if self.orders_to_process:
             order = self.orders_to_process.pop(0)
             self.process_flow[0].queue.append(order)
+
+    def work(self):
+        pass
+
+    def release_orders_to_customer(self):
+        pass
