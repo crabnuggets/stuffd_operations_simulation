@@ -11,5 +11,6 @@ class Station:
         self.queue = []
 
     def get_processing_time(self):
+        from utils.utils import truncated_norm_dist_rv
         return truncated_norm_dist_rv(self.processing_time_min, self.processing_time_max,
                                       self.processing_time_mean, self.processing_time_sd)
