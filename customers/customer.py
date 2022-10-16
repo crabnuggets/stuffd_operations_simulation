@@ -1,4 +1,5 @@
 import random
+from typing import List
 
 from flow_units.flow_units import *
 from orders.order import *
@@ -8,7 +9,9 @@ from orders.order import *
 class Customer:
     def __init__(self) -> None:
         self.inter_arrival_time = random.randint(40, 60)
+        self.arrival_time = None
         self.qty_ordered = None
+        self.orders: List[Order] = None
 
     def get_flow_units_ordered(self, qty_ordered):
         orders = []
