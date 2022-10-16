@@ -1,11 +1,12 @@
 from customers.customer import Customer
-from utils import truncated_norm_dist_rv
 
 
 # OG Queue
 class PhysicalCustomer(Customer):
     def __init__(self) -> None:
         super().__init__()
+        from utils.utils import truncated_norm_dist_rv
+
         self.qty_min = 1
         self.qty_max = 10
         self.qty_mean = 1
