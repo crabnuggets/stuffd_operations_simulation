@@ -8,4 +8,4 @@ def truncated_norm_dist_rv(min, max, mean, sd):
     max_prob = norm.cdf(max, loc=mean, scale=sd)
     simulated_prob = (max_prob - min_prob) * random.random() + min_prob
     simulated_qty = norm.ppf(simulated_prob, loc=mean, scale=sd)
-    return round(simulated_qty, 0)
+    return int(round(simulated_qty, 0))
