@@ -12,6 +12,7 @@ class Customer:
         self.arrival_time = None
         self.qty_ordered = None
         self.orders: List[Order] = []
+        self.time_orders_received = None
 
     def get_flow_units_ordered(self, qty_ordered):
         orders = []

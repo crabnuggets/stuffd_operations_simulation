@@ -22,15 +22,6 @@ class QueueStore(Store):
                              self.product_toasting_station,
                              self.cashier]
 
-    # TODO: Remove this function if it is not used
-    def process_customer(self):
-        """
-        Add the orders from the customer at the head of the queue (if one exists) to the list of orders to process.
-        """
-        if self.customers_to_process:
-            customer = self.customers_to_process.pop(0)
-            self.orders_to_process.extend(customer.orders)
-
     def dispatch_order(self):
         """
         Get the order of the head of the queue and dispatch it to the next respective station to work no it.
@@ -39,8 +30,27 @@ class QueueStore(Store):
             order = self.orders_to_process.pop(0)
             self.process_flow[0].queue.append(order)
 
-    def work(self):
-        pass
+    def work(self, curr_time):
+        completed_orders = []
+        for station in self.process_flow:
+            station.queue.extend(completed_orders)
+            completed_orders = station.work(curr_time)
 
-    def release_orders_to_customer(self):
-        pass
+        # Orders to progress returns from the final station are completed orders
+        # Add completed orders to the store's dictionary of customer orders where customer (key) -> [orders] (value)
+        for order in completed_orders:
+            customer = order.customer
+            if customer not in self.orders_completed:
+                self.orders_completed[customer] = [order]
+            else:
+                self.orders_completed[customer].append(order)
+
+    def release_orders_to_customer(self, curr_time):
+        completed_customers = []
+        for customer, completed_orders in self.orders_completed.items():
+            if len(completed_orders) == customer.qty_ordered:
+                customer.time_orders_received = curr_time
+                completed_customers.append(customer)
+        for customer in completed_customers:
+            self.orders_completed.pop(customer)
+        return completed_customers
