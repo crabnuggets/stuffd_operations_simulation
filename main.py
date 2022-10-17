@@ -11,7 +11,7 @@ from customers.physical_customer import PhysicalCustomer
 from store.queue_store import QueueStore
 
 # Global variable to keep track of current time
-NUM_CUSTOMERS_TO_SIMULATE = 10
+NUM_CUSTOMERS_TO_SIMULATE = 200
 
 
 def randomly_generate_customers():
@@ -106,5 +106,7 @@ def extract_average_flow_time(customers: List[Customer]):
 
 
 if __name__ == "__main__":
-    queue_customers = simulate_kiosk_system()
+    queue_customers = simulate_queue_system()
+    kiosk_customers = simulate_kiosk_system()
     pprint(extract_average_flow_time(queue_customers))
+    pprint(extract_average_flow_time(kiosk_customers))
