@@ -18,4 +18,5 @@ class Burrito(FlowUnit):
 class DailyBowl(FlowUnit):
     def __init__(self) -> None:
         super().__init__()
-        self.recipe = ['SaladBaseStation', 'SauceStation', 'DailyBowlToppingsStation', 'MeatStation']
+        self.recipe = ['SaladBaseStation', 'SauceStation', 'DailyBowlToppingsStation', 'MeatStation',
+                       'AdditionalToppingsStation']
