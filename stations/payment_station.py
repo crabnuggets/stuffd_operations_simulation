@@ -20,8 +20,6 @@ class CashierStation(Station):
         # Get the processing time for the order and update its completion time
         completion_time = curr_time + self.get_processing_time()
         customer_to_process.time_orders_received = completion_time
-        for order in customer_to_process.orders:
-            order.time_completed = completion_time
         self.curr_orders_processed.append(customer_to_process)
 
     def get_completed_orders(self, curr_time) -> List[Customer]:
