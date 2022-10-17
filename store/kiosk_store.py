@@ -36,7 +36,9 @@ class KioskStore(Store):
     def dispatch_order(self, order):
         # Dispatch each order to its first respective station
         order_recipe = order.item_type.recipe
-        station_to_dispatch = order_recipe.pop(0)
+        # Progress the stage in production of the flow unit and get the station for it
+        station_to_dispatch = order_recipe[order.item_type.curr_stage_in_production]
+        order.item_type.curr_stage_in_production += 1
         self.station_dispatch_map[station_to_dispatch].queue.append(order)
 
     def dispatch_all_orders(self, curr_time):
@@ -55,7 +57,7 @@ class KioskStore(Store):
             orders_to_progress = station.work(curr_time)
             for order in orders_to_progress:
                 # If there are remaining stations for the order to go through, dispatch it. Else, the order is complete
-                if order.item_type.recipe:
+                if order.item_type.curr_stage_in_production < len(order.item_type.recipe):
                     self.dispatch_order(order)
                 else:
                     completed_orders.append(order)
