@@ -1,4 +1,5 @@
 from store.store import Store
+from customers.physical_customer import PhysicalCustomer
 from stations.food_processing_station import FoodProcessingStation
 from stations.payment_station import KioskStation
 
@@ -25,13 +26,18 @@ class KioskStore(Store):
                              self.product_toasting_station]
         self.station_dispatch_map = {station.name: station for station in self.process_flow}
 
-    def process_customer_to_kiosk(self):
+    def process_customer_to_kiosk(self, curr_time):
         """
         Pop a customer from the queue and add the customer to the kiosk queue
         """
         if self.customers_to_process:
             customer = self.customers_to_process.pop(0)
-            self.kiosk.queue.append(customer)
+            if isinstance(customer, PhysicalCustomer):
+                self.kiosk.queue.append(customer)
+            else:
+                for order in customer.orders:
+                    order.time_created = curr_time
+                    self.dispatch_order(order)
 
     def dispatch_order(self, order):
         # Dispatch each order to its first respective station

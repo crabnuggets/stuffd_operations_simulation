@@ -1,6 +1,7 @@
 from typing import List
 
 from customers.customer import Customer
+from customers.physical_customer import PhysicalCustomer
 from orders.order import Order
 from stations.base_station import Station
 
@@ -18,7 +19,10 @@ class CashierStation(Station):
         """
         customer_to_process = self.queue.pop(0)
         # Get the processing time for the order and update its completion time
-        completion_time = curr_time + self.get_processing_time()
+        if isinstance(customer_to_process, PhysicalCustomer):
+            completion_time = curr_time + self.get_processing_time()
+        else:
+            completion_time = curr_time
         customer_to_process.time_orders_received = completion_time
         self.curr_orders_processed.append(customer_to_process)
 

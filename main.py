@@ -77,7 +77,7 @@ def simulate_kiosk_system():
             if customers_list:
                 next_customer = get_next_customer(customers_list, curr_time)
 
-        kiosk_store.process_customer_to_kiosk()
+        kiosk_store.process_customer_to_kiosk(curr_time)
         kiosk_store.dispatch_all_orders(curr_time)
         kiosk_store.work(curr_time)
         completed_customers.extend(kiosk_store.release_orders_to_customer(curr_time))
@@ -108,5 +108,7 @@ def extract_average_flow_time(customers: List[Customer]):
 if __name__ == "__main__":
     queue_customers = simulate_queue_system()
     kiosk_customers = simulate_kiosk_system()
+    print("Average flow times under QUEUE system:")
     pprint(extract_average_flow_time(queue_customers))
+    print("\nAverage flow times under KIOSK system:")
     pprint(extract_average_flow_time(kiosk_customers))
