@@ -4,13 +4,14 @@ from orders.order import Order
 
 
 class Station:
-    def __init__(self) -> None:
-        self.processing_time_min = None
-        self.processing_time_max = None
-        self.processing_time_mean = None
-        self.processing_time_sd = None
+    def __init__(self, name, min_time, max_time, mean, sd, capacity=1) -> None:
+        self.name = name
+        self.processing_time_min = min_time
+        self.processing_time_max = max_time
+        self.processing_time_mean = mean
+        self.processing_time_sd = sd
 
-        self.capacity = 1
+        self.capacity = capacity
         self.queue: List[Order] = []
         self.curr_orders_processed: List[Order] = []
 
@@ -34,6 +35,7 @@ class Station:
         """
         order_to_process = self.queue.pop(0)
         # Get the processing time for the order and update its completion time
+        # TODO: Factor in recipes when determining processing time
         order_to_process.time_completed = curr_time + self.get_processing_time()
         self.curr_orders_processed.append(order_to_process)
 

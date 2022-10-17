@@ -1,24 +1,26 @@
 from store.store import Store
-from stations.IRL_stations import *
+from stations.base_station import Station
 
 
 class QueueStore(Store):
     def __init__(self) -> None:
         super().__init__()
-        self.wrap_toasting_station = IRLWrapToastingStation()
-        self.salad_base_station = IRLSaladBaseStation()
-        self.sauce_station = IRLSauceStation()
-        self.daily_bowl_toppings_station = IRLDailyBowlToppingsStation()
-        self.meat_station = IRLMeatStation()
-        self.additional_toppings_station = IRLAdditionalToppingsStation()
-        self.product_toasting_station = IRLProductToastingStation()
-        self.cashier = IRLPaymentStation()
+        self.wrap_toasting_station = Station('WrapToastingStation',8, 12, 10, 2)
+        self.salad_base_station = Station('SaladBaseStation', 3, 18, 12, 5)
+        self.sauce_station = Station('SauceStation', 3, 7, 5, 2)
+        self.daily_bowl_toppings_station = Station('DailyBowlToppingsStation', 5, 20, 13, 5)
+        self.meat_station = Station('MeatStation', 1.5, 5, 3, 1)
+        self.additional_toppings_station = Station('AdditionalToppingsStation', 5, 18, 13, 3)
+        self.wrapping_station = Station('Wrapping', 3.5, 5, 4, 1.5)
+        self.product_toasting_station = Station('ProductToastingStation', 8, 15, 12, 3)
+        self.cashier = Station('Cashier', 15, 35, 18, 6)
         self.process_flow = [self.wrap_toasting_station,
                              self.salad_base_station,
                              self.sauce_station,
                              self.daily_bowl_toppings_station,
                              self.meat_station,
                              self.additional_toppings_station,
+                             self.wrapping_station,
                              self.product_toasting_station,
                              self.cashier]
 
@@ -33,6 +35,7 @@ class QueueStore(Store):
     def work(self, curr_time):
         completed_orders = []
         for station in self.process_flow:
+            # Queue station requires all orders to pass through every station
             station.queue.extend(completed_orders)
             completed_orders = station.work(curr_time)
 
