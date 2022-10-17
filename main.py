@@ -48,18 +48,22 @@ def simulate_queue_system():
 
 
 def extract_average_flow_time(customers: List[Customer]):
-    extracted_orders = [customer.orders for customer in customers]
-    flattened_extracted_orders = [order for orders in extracted_orders for order in orders]
-    extracted_item_types = [order.item_type.__class__.__name__ for order in flattened_extracted_orders]
-    kebab_flow_times = [order.time_completed - order.time_created for order in flattened_extracted_orders
-                        if order.item_type.__class__.__name__ == 'Kebab']
-    burrito_flow_times = [order.time_completed - order.time_created for order in flattened_extracted_orders
-                          if order.item_type.__class__.__name__ == 'Burrito']
-    daily_bowl_flow_times = [order.time_completed - order.time_created for order in flattened_extracted_orders
-                             if order.item_type.__class__.__name__ == 'DailyBowl']
-    return {'avg_kebab_ft': np.mean(kebab_flow_times),
-            'avg_burrito_ft': np.mean(burrito_flow_times),
-            'avg_daily_bowl_ft': np.mean(daily_bowl_flow_times)}
+    kebab_flow_times_2 = []
+    burrito_flow_times_2 = []
+    daily_bowl_flow_times_2 = []
+    for customer in customers:
+        customer_orders = customer.orders
+        for order in customer_orders:
+            flow_time = order.time_completed - order.time_created
+            if order.item_type.__class__.__name__ == 'Kebab':
+                kebab_flow_times_2.append(flow_time)
+            if order.item_type.__class__.__name__ == 'Burrito':
+                burrito_flow_times_2.append(flow_time)
+            if order.item_type.__class__.__name__ == 'DailyBowl':
+                daily_bowl_flow_times_2.append(flow_time)
+    return {'avg_kebab_ft': np.mean(kebab_flow_times_2),
+            'avg_burrito_ft': np.mean(burrito_flow_times_2),
+            'avg_daily_bowl_ft': np.mean(daily_bowl_flow_times_2)}
 
 
 if __name__ == "__main__":
