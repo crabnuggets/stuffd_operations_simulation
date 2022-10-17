@@ -8,7 +8,7 @@ from orders.order import *
 # Parent class
 class Customer:
     def __init__(self) -> None:
-        self.inter_arrival_time = random.randint(30, 45)
+        self.inter_arrival_time = random.randint(30, 60)
         self.arrival_time = None
         self.qty_ordered = None
         self.orders: List[Order] = []
