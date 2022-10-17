@@ -18,7 +18,7 @@ def simulate_queue_system():
     # Generate customers
     customers_list: List[Customer] = []
     for i in range(NUM_CUSTOMERS_TO_SIMULATE):
-        customer = random.choices([PhysicalCustomer, MobileCustomer], weights=[8, 1])[0]()
+        customer = random.choices([PhysicalCustomer, MobileCustomer], weights=[8, 2])[0]()
         customers_list.append(customer)
     # Instantiate physical queue store (i.e. store with original system) and add first customer
     queue_store = QueueStore()
