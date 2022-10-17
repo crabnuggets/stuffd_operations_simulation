@@ -35,8 +35,10 @@ class Station:
         """
         order_to_process = self.queue.pop(0)
         # Get the processing time for the order and update its completion time
-        # TODO: Factor in recipes when determining processing time
-        order_to_process.time_completed = curr_time + self.get_processing_time()
+        if self.name in order_to_process.item_type.recipe:
+            order_to_process.time_completed = curr_time + self.get_processing_time()
+        else:
+            order_to_process.time_completed = curr_time
         self.curr_orders_processed.append(order_to_process)
 
     def get_completed_orders(self, curr_time) -> List[Order]:
