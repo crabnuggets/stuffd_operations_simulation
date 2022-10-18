@@ -1,3 +1,4 @@
+import copy
 from pprint import pprint
 from typing import Optional
 
@@ -22,10 +23,10 @@ def randomly_generate_customers():
     return customers_list
 
 
-def simulate_queue_system():
+def simulate_queue_system(input_customers_list):
     curr_time = 0
     # Generate customers
-    customers_list = randomly_generate_customers()
+    customers_list = input_customers_list
     # Instantiate physical queue store (i.e. store with original system) and add first customer
     queue_store = QueueStore()
     first_customer = customers_list.pop(0)
@@ -54,10 +55,10 @@ def simulate_queue_system():
     return completed_customers
 
 
-def simulate_kiosk_system():
+def simulate_kiosk_system(input_customers_list):
     curr_time = 0
     # Generate customers
-    customers_list = randomly_generate_customers()
+    customers_list = input_customers_list
     # Instantiate kiosk system store
     kiosk_store = KioskStore()
     first_customer = customers_list. pop(0)
@@ -106,8 +107,10 @@ def extract_average_flow_time(customers: List[Customer]):
 
 
 if __name__ == "__main__":
-    queue_customers = simulate_queue_system()
-    kiosk_customers = simulate_kiosk_system()
+    queue_customers_list = randomly_generate_customers()
+    kiosk_customers_list = copy.deepcopy(queue_customers_list)
+    queue_customers = simulate_queue_system(queue_customers_list)
+    kiosk_customers = simulate_kiosk_system(kiosk_customers_list)
     print("Average flow times under QUEUE system:")
     pprint(extract_average_flow_time(queue_customers))
     print("\nAverage flow times under KIOSK system:")
