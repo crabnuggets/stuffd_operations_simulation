@@ -55,13 +55,13 @@ def simulate_queue_system(input_customers_list):
     return completed_customers
 
 
-def simulate_kiosk_system(input_customers_list):
+def simulate_kiosk_system(input_customers_list, kiosk_count=3):
     curr_time = 0
     # Generate customers
     customers_list = input_customers_list
     # Instantiate kiosk system store
-    kiosk_store = KioskStore()
-    first_customer = customers_list. pop(0)
+    kiosk_store = KioskStore(num_kiosks=kiosk_count)
+    first_customer = customers_list.pop(0)
     first_customer.arrival_time = 0
 
     kiosk_store.customers_to_process.append(first_customer)
@@ -106,12 +106,52 @@ def extract_average_flow_time(customers: List[Customer]):
             'avg_daily_bowl_ft': np.mean(daily_bowl_flow_times_2)}
 
 
+def extract_physical_customer_avg_wait_time(customers: List[Customer]):
+    wait_times = {1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [], 10: []}
+    for customer in customers:
+        if isinstance(customer, PhysicalCustomer):
+            wait_times[customer.qty_ordered].append(customer.time_orders_received - customer.arrival_time)
+    res = {}
+    for qty, wait_times in wait_times.items():
+        res[qty] = np.mean(wait_times)
+    return res
+
+
+def compare_physical_customer_avg_wait_time(data):
+    res = {1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [], 10: []}
+    for customer_list in data:
+        extracted_avg_wait_times = extract_physical_customer_avg_wait_time(customer_list)
+        for qty, avg_wait_time in extracted_avg_wait_times.items():
+            res[qty].append(avg_wait_time)
+    return res
+
+
 if __name__ == "__main__":
-    queue_customers_list = randomly_generate_customers()
-    kiosk_customers_list = copy.deepcopy(queue_customers_list)
-    queue_customers = simulate_queue_system(queue_customers_list)
-    kiosk_customers = simulate_kiosk_system(kiosk_customers_list)
+    customers_list = randomly_generate_customers()
+
+    # TO COmPARE AVERAGE FLOW TIMES BETWEEN SYSTEMS
+    queue_inputs = copy.deepcopy(customers_list)
+    kiosk_inputs = copy.deepcopy(customers_list)
+    queue_customers = simulate_queue_system(queue_inputs)
+    kiosk_customers = simulate_kiosk_system(kiosk_inputs)
     print("Average flow times under QUEUE system:")
     pprint(extract_average_flow_time(queue_customers))
     print("\nAverage flow times under KIOSK system:")
     pprint(extract_average_flow_time(kiosk_customers))
+    print("\nAverage customer waiting time for QUEUE system:")
+    pprint(extract_physical_customer_avg_wait_time(queue_customers))
+    print("\nAverage customer waiting time for KIOSK system:")
+    pprint(extract_physical_customer_avg_wait_time(kiosk_customers))
+
+    # TO COMPARE AVERAGE CUSTOMER WAIT TIMES BY VARYING NUMBER OF KIOSKS
+    # ==================================================================
+    # simulation_inputs = [copy.deepcopy(customers_list) for i in range(6)]
+    # kiosk_customers_1 = simulate_kiosk_system(simulation_inputs[0], kiosk_count=1)
+    # kiosk_customers_2 = simulate_kiosk_system(simulation_inputs[1], kiosk_count=2)
+    # kiosk_customers_3 = simulate_kiosk_system(simulation_inputs[2])
+    # kiosk_customers_4 = simulate_kiosk_system(simulation_inputs[3], kiosk_count=4)
+    # kiosk_customers_5 = simulate_kiosk_system(simulation_inputs[4], kiosk_count=5)
+    # kiosk_customers_6 = simulate_kiosk_system(simulation_inputs[5], kiosk_count=6)
+    # results = [kiosk_customers_1, kiosk_customers_2, kiosk_customers_3,
+    #            kiosk_customers_4, kiosk_customers_5, kiosk_customers_6]
+    # pprint(compare_physical_customer_avg_wait_time(results))

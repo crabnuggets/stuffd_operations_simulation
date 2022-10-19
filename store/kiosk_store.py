@@ -5,7 +5,7 @@ from stations.payment_station import KioskStation
 
 
 class KioskStore(Store):
-    def __init__(self) -> None:
+    def __init__(self, num_kiosks=3) -> None:
         super().__init__()
         self.wrap_toasting_station = FoodProcessingStation('WrapToastingStation', 8, 12, 10, 2)
         self.salad_base_station = FoodProcessingStation('SaladBaseStation', 2, 6, 4, 2)
@@ -15,7 +15,7 @@ class KioskStore(Store):
         self.additional_toppings_station = FoodProcessingStation('AdditionalToppingsStation', 2, 5, 3.5, 1)
         self.wrapping_station = FoodProcessingStation('WrappingStation', 3.5, 5, 4, 1.5)
         self.product_toasting_station = FoodProcessingStation('ProductToastingStation', 8, 15, 12, 3)
-        self.kiosk = KioskStation('Kiosk', 30, 60, 40, 15, capacity=3)
+        self.kiosk = KioskStation('Kiosk', 35, 130, 60, 40, capacity=num_kiosks)
         self.process_flow = [self.wrap_toasting_station,
                              self.salad_base_station,
                              self.sauce_station,
