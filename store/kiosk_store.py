@@ -14,7 +14,7 @@ class KioskStore(Store):
         self.meat_station = FoodProcessingStation('MeatStation', 1.5, 3, 2, 0.5)
         self.additional_toppings_station = FoodProcessingStation('AdditionalToppingsStation', 2, 5, 3.5, 1)
         self.wrapping_station = FoodProcessingStation('WrappingStation', 3.5, 5, 4, 1.5)
-        self.product_toasting_station = FoodProcessingStation('ProductToastingStation', 8, 15, 12, 3)
+        self.product_toasting_station = FoodProcessingStation('ProductToastingStation', 8, 15, 12, 3, capacity=3)
         self.kiosk = KioskStation('Kiosk', 35, 130, 60, 40, capacity=num_kiosks)
         self.process_flow = [self.wrap_toasting_station,
                              self.salad_base_station,

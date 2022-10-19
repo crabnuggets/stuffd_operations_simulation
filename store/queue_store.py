@@ -13,7 +13,7 @@ class QueueStore(Store):
         self.meat_station = FoodProcessingStation('MeatStation', 1.5, 5, 3, 1)
         self.additional_toppings_station = FoodProcessingStation('AdditionalToppingsStation', 5, 18, 13, 3)
         self.wrapping_station = FoodProcessingStation('WrappingStation', 3.5, 5, 4, 1.5)
-        self.product_toasting_station = FoodProcessingStation('ProductToastingStation', 8, 15, 12, 3)
+        self.product_toasting_station = FoodProcessingStation('ProductToastingStation', 8, 15, 12, 3, capacity=3)
         self.cashier = CashierStation('Cashier', 15, 35, 18, 6)
         self.process_flow = [self.wrap_toasting_station,
                              self.salad_base_station,
