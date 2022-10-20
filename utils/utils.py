@@ -44,11 +44,11 @@ def plot_chart_1(queue_data: Dict[str, float], kiosk_data: Dict[str, float]):
     plt.bar(x_pos, burrito, color='royalblue', width=bar_width, label='Burrito')
     plt.bar(x_pos + 0.2, daily_bowl, color='mediumseagreen', width=bar_width, label='Daily bowl')
     plt.bar(x_pos + 0.4, kebab, color='purple', width=bar_width, label='Kebab')
-    plt.xticks(x_pos + 0.2, ('Queue', 'Kiosk'))
-    plt.xlabel('Type of process')
-    plt.ylabel('Average flow time (s)')
-    plt.legend()
-    plt.title('Average flow time against type of process')
+    plt.xticks(x_pos + 0.2, ('Queue', 'Kiosk'), fontsize=11)
+    plt.xlabel('Type of process', fontsize=11)
+    plt.ylabel('Average flow time (s)', fontsize=11)
+    plt.legend(fontsize=11)
+    plt.title('Average flow time against type of process', fontsize=11)
     plt.savefig('plots/plot_1.png')
 
 
@@ -67,9 +67,9 @@ def plot_chart_2(queue_data, kiosk_data):
     plt.plot(number_of_orders, kiosk_cust_wait_times, label='Kiosk', color='green')
     plt.plot(number_of_orders, queue_cust_wait_times, label='Queue', color='red')
 
-    plt.xlabel('Number of orders')
-    plt.ylabel('Average waiting time')
-    plt.title('Average waiting time against number of orders')
+    plt.xlabel('Number of orders', fontsize=11)
+    plt.ylabel('Average waiting time', fontsize=11)
+    plt.title('Average waiting time against number of orders', fontsize=11)
     plt.legend()
     plt.savefig('plots/plot_2.png')
 
@@ -99,8 +99,8 @@ def plot_chart_3(kiosk_data: Dict[int, List[float]]):
     plt.plot(number_of_kiosks, order_5, label='5 order', color='grey', alpha=0.5)
     plt.plot(number_of_kiosks, order_6, label='6 order', color='red')
 
-    plt.xlabel('Number of Kiosks')
-    plt.ylabel('Average waiting time')
-    plt.title('Average waiting time against number of kiosks')
+    plt.xlabel('Number of Kiosks', fontsize=11)
+    plt.ylabel('Average waiting time', fontsize=11)
+    plt.title('Average waiting time against number of kiosks', fontsize=11)
     plt.legend()
     plt.savefig('plots/plot_3.png')

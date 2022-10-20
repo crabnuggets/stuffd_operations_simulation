@@ -142,15 +142,17 @@ if __name__ == "__main__":
 
     # TO COMPARE AVERAGE FLOW TIMES BETWEEN SYSTEMS
     # =============================================
-    queue_avg_flow_times = extract_average_flow_time(queue_customers)
-    kiosk_avg_flow_times = extract_average_flow_time(kiosk_customers)
-    plot_chart_1(queue_avg_flow_times, kiosk_avg_flow_times)
-    #
-    # # TO COMPARE CUSTOMER WAIT TIMES BETWEEN SYSTEMS
-    # # ==============================================
-    queue_cust_wait_times = extract_physical_customer_avg_wait_time(queue_customers)
-    kiosk_cust_wait_times = extract_physical_customer_avg_wait_time(kiosk_customers)
-    plot_chart_2(queue_cust_wait_times, kiosk_cust_wait_times)
+    # queue_avg_flow_times = extract_average_flow_time(queue_customers)
+    # kiosk_avg_flow_times = extract_average_flow_time(kiosk_customers)
+    # plot_chart_1(queue_avg_flow_times, kiosk_avg_flow_times)
+    # =============================================
+
+    # TO COMPARE CUSTOMER WAIT TIMES BETWEEN SYSTEMS
+    # ==============================================
+    # queue_cust_wait_times = extract_physical_customer_avg_wait_time(queue_customers)
+    # kiosk_cust_wait_times = extract_physical_customer_avg_wait_time(kiosk_customers)
+    # plot_chart_2(queue_cust_wait_times, kiosk_cust_wait_times)
+    # ==============================================
 
     # TO COMPARE AVERAGE CUSTOMER WAITING TIMES AGAINST NUMBER OF KIOSKS FOR KIOSK PROCESS FLOW
     # =========================================================================================
@@ -165,3 +167,81 @@ if __name__ == "__main__":
                                        kiosk_4_results, kiosk_5_results, kiosk_6_results]
     plot_chart_3_results = compare_physical_customer_avg_wait_time(kiosk_sensitivity_analysis_data)
     plot_chart_3(plot_chart_3_results)
+    # =========================================================================================
+
+    # Repeat for 100 simulations
+    # WARNING: Time consuming!!!
+    # ==================================================================================
+    q_results = []
+    k_results = []
+    for i in range(100):
+        customers = randomly_generate_customers()
+        q_customers = copy.deepcopy(customers)
+        k_customers = copy.deepcopy(customers)
+        q_results.append(simulate_queue_system(q_customers))
+        k_results.append(simulate_kiosk_system(k_customers))
+
+    # 100 simulations averages and standard deviations for average flow times for each flow unit under each process flow
+    # ==================================================================================================================
+    q_ft_averages = {'avg_kebab_ft': [], 'avg_burrito_ft': [], 'avg_daily_bowl_ft': []}
+    k_ft_averages = {'avg_kebab_ft': [], 'avg_burrito_ft': [], 'avg_daily_bowl_ft': []}
+    for result in q_results:
+        q_avg_flow_times = extract_average_flow_time(result)
+        for key, value in q_avg_flow_times.items():
+            q_ft_averages[key].append(value)
+    for result in k_results:
+        k_avg_flow_times = extract_average_flow_time(result)
+        for key, value in k_avg_flow_times.items():
+            k_ft_averages[key].append(value)
+    q_100_sims_ft_res = {'avg_kebab_ft': {}, 'avg_burrito_ft': {}, 'avg_daily_bowl_ft': {}}
+    k_100_sims_ft_res = {'avg_kebab_ft': {}, 'avg_burrito_ft': {}, 'avg_daily_bowl_ft': {}}
+    for flow_unit, averages in q_ft_averages.items():
+        q_100_sims_ft_res[flow_unit]['mean'] = float(np.mean(averages))
+        q_100_sims_ft_res[flow_unit]['s.d.'] = float(np.std(averages))
+    for flow_unit, averages in k_ft_averages.items():
+        k_100_sims_ft_res[flow_unit]['mean'] = float(np.mean(averages))
+        k_100_sims_ft_res[flow_unit]['s.d.'] = float(np.std(averages))
+    print('For 100 simulations, average flow times for QUEUE system:')
+    pprint(q_100_sims_ft_res)
+    print('\nFor 100 simulations, average flow times for KIOSK system:')
+    pprint(k_100_sims_ft_res)
+    print()
+    q_ft_averages_for_chart_1 = {flow_unit: data['mean'] for flow_unit, data in q_100_sims_ft_res.items()}
+    k_ft_averages_for_chart_1 = {flow_unit: data['mean'] for flow_unit, data in k_100_sims_ft_res.items()}
+    plot_chart_1(q_ft_averages_for_chart_1, k_ft_averages_for_chart_1)
+    # ==================================================================================================================
+
+    # 100 simulations averages and standard deviations for average customer waiting times under each system
+    # =====================================================================================================
+    q_cust_wt_averages = {}
+    k_cust_wt_averages = {}
+    for result in q_results:
+        q_cust_wait_times = extract_physical_customer_avg_wait_time(result)
+        for qty_ordered, wait_time in q_cust_wait_times.items():
+            if qty_ordered not in q_cust_wt_averages.keys():
+                q_cust_wt_averages[qty_ordered] = [wait_time]
+            elif not np.isnan(wait_time):
+                q_cust_wt_averages[qty_ordered].append(wait_time)
+    for result in k_results:
+        k_cust_wait_times = extract_physical_customer_avg_wait_time(result)
+        for qty_ordered, wait_time in k_cust_wait_times.items():
+            if qty_ordered not in k_cust_wt_averages.keys():
+                k_cust_wt_averages[qty_ordered] = [wait_time]
+            elif not np.isnan(wait_time):
+                k_cust_wt_averages[qty_ordered].append(wait_time)
+    q_100_sims_cust_wt_res = {i+1: {} for i in range(len(q_cust_wt_averages))}
+    k_100_sims_cust_wt_res = {i+1: {} for i in range(len(k_cust_wt_averages))}
+    for qty_ordered, averages in q_cust_wt_averages.items():
+        q_100_sims_cust_wt_res[qty_ordered]['mean'] = float(np.mean(averages))
+        q_100_sims_cust_wt_res[qty_ordered]['s.d.'] = float(np.std(averages))
+    for qty_ordered, averages in k_cust_wt_averages.items():
+        k_100_sims_cust_wt_res[qty_ordered]['mean'] = float(np.mean(averages))
+        k_100_sims_cust_wt_res[qty_ordered]['s.d.'] = float(np.std(averages))
+    print('For 100 simulations, average customer waiting times by qty ordered for QUEUE system:')
+    pprint(q_100_sims_cust_wt_res)
+    print('\nFor 100 simulations, average customer waiting times by qty ordered for KIOSK system:')
+    pprint(k_100_sims_cust_wt_res)
+    print()
+    q_cust_wt_averages_for_chart_1 = {qty_ordered: data['mean'] for qty_ordered, data in q_100_sims_cust_wt_res.items()}
+    k_cust_wt_averages_for_chart_1 = {qty_ordered: data['mean'] for qty_ordered, data in k_100_sims_cust_wt_res.items()}
+    plot_chart_2(q_cust_wt_averages_for_chart_1, k_cust_wt_averages_for_chart_1)
